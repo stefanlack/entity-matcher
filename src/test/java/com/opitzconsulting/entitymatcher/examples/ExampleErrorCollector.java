@@ -1,16 +1,20 @@
-package com.opitzconsulting.entitymatcher;
+package com.opitzconsulting.entitymatcher.examples;
 
+import com.opitzconsulting.entitymatcher.Person;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 
 import static org.hamcrest.Matchers.equalTo;
 
+
 public class ExampleErrorCollector {
   @Rule
   public ErrorCollector errorCollector = new ErrorCollector();
 
   @Test
+  @Ignore("Ignored, since this demonstration code and is expected to fail!")
   public void testing_single_properties_with_error_collector() {
     final Person expected = new Person( "Maier", "Hans" ).withAge( 42 );
     final Person actual = new Person( "Mayer", "Hans" ).withAge( 7 );
