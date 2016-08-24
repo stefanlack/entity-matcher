@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author Stefan Lack
+ */
 public class ReflectionUtils {
 
   private ReflectionUtils() {
@@ -13,27 +16,24 @@ public class ReflectionUtils {
   }
 
   public static Object getPropertyValueFromInstance( String propertyName, Object instance ) {
-    Object value = null;
     Class clazz = instance.getClass();
     try {
 
       Field field = getDeclaredOrInheritedField( propertyName, clazz );
       field.setAccessible( true );
-      value = field.get( instance );
+      return field.get( instance );
     } catch ( Exception e ) {
       throw new RuntimeException( String.format( "Cannot read field '%s' from Entity '%s': %s",
         propertyName,
         clazz.getName(),
         e.getMessage() ), e );
     }
-    return value;
   }
 
   private static Field getDeclaredOrInheritedField( String fieldName, Class<?> clazz )
     throws NoSuchFieldException {
     try {
-      Field declaredField = clazz.getDeclaredField( fieldName );
-      return declaredField;
+      return clazz.getDeclaredField( fieldName );
     } catch ( NoSuchFieldException e ) {
       Class<?> superclass = clazz.getSuperclass();
       if ( superclass != null ) {
@@ -44,13 +44,8 @@ public class ReflectionUtils {
 
   }
 
-  public static String[] getPropertyNamesFromInstance( Object instance ) {
-    List<String> propertyNames = getPropertyNamesFromInstanceAsList( instance );
-    return propertyNames.toArray( new String[] { } );
-  }
-
   public static List<String> getPropertyNamesFromInstanceAsList( Object instance ) {
-    List<String> propertyNames = new ArrayList<String>();
+    List<String> propertyNames = new ArrayList<>();
     for ( Field field : getAllFields( instance.getClass() ) ) {
       propertyNames.add( field.getName() );
     }
@@ -59,7 +54,7 @@ public class ReflectionUtils {
   }
 
   private static List<Field> getAllFields( Class<?> type ) {
-    List<Field> fields = new ArrayList<Field>();
+    List<Field> fields = new ArrayList<>();
     for ( Class<?> c = type; c != null; c = c.getSuperclass() ) {
       fields.addAll( Arrays.asList( c.getDeclaredFields() ) );
     }

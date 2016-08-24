@@ -1,3 +1,3 @@
 # entity-matcher
 
-Entity Matcher ist ein mittels [Hamcrest für Java](http://hamcrest.org/JavaHamcrest/) implementierter Mather, mittels dem Java Entities 
+Provides a couple of different configurable matcher implementations that can be used for testing of different properties of a given java instance in one single assert statement.
